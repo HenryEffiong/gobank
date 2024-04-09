@@ -1,0 +1,29 @@
+postgres:
+	@echo "initializing postgres..."
+	docker run --name postgresGoBank -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:16.2-alpine3.19
+
+createdb:
+	@echo "creating db..."
+	docker exec -it postgresGoBank createdb --username=root --owner=root go_bank
+
+dropdb:
+	@echo "dropping db..."
+	docker exec -it postgresGoBank dropdb go_bank
+
+
+migrate_up:
+	@echo "running up migrations..."
+	migrate -path db/migration -database "postgresql://root:secret@localhost:5432/go_bank?sslmode=disable" -verbose up
+
+migrate_down:
+	@echo "running down migrations..."
+	migrate -path db/migration -database "postgresql://root:secret@localhost:5432/go_bank?sslmode=disable" -verbose down
+
+## up_build: stops docker-compose (if running), builds all projects and starts docker compose
+start: postgres createdb migrate_up
+
+sqlc:
+	sqlc generate
+
+
+.PHONY: postgres createdb dropdb migrate_up migrate_down sqlc

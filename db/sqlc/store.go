@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"log"
 )
 
 // Store provides all the functions to execute db queries and transactions
@@ -91,7 +92,11 @@ func (store *Store) TransferTx(ctx context.Context, arg TransferTxParams) (Trans
 		}
 
 		// TODO: update accounts' balance
-		
+
 		return nil
 	})
+
+	log.Println(err)
+
+	return result, nil
 }

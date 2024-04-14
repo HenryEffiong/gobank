@@ -10,6 +10,7 @@ import (
 )
 
 var testQueries *Queries
+var testDB *sql.DB
 
 const (
 	dbDriver       = "pgx"
@@ -17,12 +18,13 @@ const (
 )
 
 func TestMain(m *testing.M) {
-	conn, err := sql.Open(dbDriver, dbSourceString)
+	var err error
+	testDB, err = sql.Open(dbDriver, dbSourceString)
 	if err != nil {
 		log.Fatalf("cannot connect to db. err: %v", err)
 	}
 
-	testQueries = New(conn)
+	testQueries = New(testDB)
 
 	os.Exit(m.Run())
 }

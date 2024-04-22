@@ -13,7 +13,7 @@ type Server struct {
 	router *gin.Engine
 }
 
-func NewServer(store  db.Store) *Server {
+func NewServer(store db.Store) *Server {
 	server := &Server{store: store}
 	router := gin.Default()
 
@@ -22,6 +22,8 @@ func NewServer(store  db.Store) *Server {
 	router.GET("/accounts/:id", server.getAccount)
 	router.GET("/accounts", server.listAccounts)
 	router.PATCH("/accounts", server.updateAccount)
+
+	router.POST("/transfers", server.createTransfer)
 
 	server.router = router
 	return server

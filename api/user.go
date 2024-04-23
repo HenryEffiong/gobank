@@ -3,6 +3,7 @@ package api
 import (
 	"database/sql"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	db "github.com/henryeffiong/gobank/db/sqlc"
@@ -14,6 +15,14 @@ type CreateUserRequest struct {
 	Password string `json:"password" binding:"required,min=6"`
 	FullName string `json:"full_name" binding:"required"`
 	Email    string `json:"email" binding:"required,email"`
+}
+
+type CreateUserResponse struct {
+	Username          string    `json:"username"`
+	FullName          string    `json:"full_name"`
+	Email             string    `json:"email"`
+	PasswordChangedAt time.Time `json:"password_changed_at"`
+	CreatedAt         time.Time `json:"created_at"`
 }
 
 func (server *Server) createUser(ctx *gin.Context) {
@@ -41,7 +50,15 @@ func (server *Server) createUser(ctx *gin.Context) {
 		ctx.JSON(http.StatusForbidden, errorResponse(err))
 		return
 	}
-	ctx.JSON(http.StatusOK, user)
+
+	rsp := CreateUserResponse{
+		Username:          user.Username,
+		FullName:          user.FullName,
+		Email:             user.Email,
+		PasswordChangedAt: user.PasswordChangedAt,
+		CreatedAt:         user.CreatedAt,
+	}
+	ctx.JSON(http.StatusOK, rsp)
 }
 
 type getUserRequest struct {

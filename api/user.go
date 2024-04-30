@@ -2,6 +2,7 @@ package api
 
 import (
 	"database/sql"
+	"log"
 	"net/http"
 	"time"
 
@@ -38,6 +39,7 @@ func newUserResponse(user db.User) userResponse {
 func (server *Server) createUser(ctx *gin.Context) {
 	var req CreateUserRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
+		log.Println(err)
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
 		return
 	}
@@ -176,5 +178,5 @@ func (server *Server) loginUser(ctx *gin.Context) {
 		// RefreshTokenExpiresAt: refreshPayload.ExpiredAt,
 		User: newUserResponse(user),
 	}
-	ctx.JSON(http.StatusOK, rsp )
+	ctx.JSON(http.StatusOK, rsp)
 }

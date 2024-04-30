@@ -1,6 +1,6 @@
 postgres:
 	@echo "initializing postgres..."
-	docker run --name postgresGoBank -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:16.2-alpine3.19
+	docker run --name postgresGoBank --network bank-network -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:16.2-alpine3.19
 
 createdb:
 	@echo "creating db..."

@@ -1,14 +1,14 @@
 postgres:
 	@echo "initializing postgres..."
-	docker run --name postgresGoBank --network bank-network -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:16.2-alpine3.19
+	docker run --name postgres_go_bank --network bank-network -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:16.2-alpine3.19
 
 createdb:
 	@echo "creating db..."
-	docker exec -it postgresGoBank createdb --username=root --owner=root go_bank
+	docker exec -it postgres_go_bank createdb --username=root --owner=root go_bank
 
 dropdb:
 	@echo "dropping db..."
-	docker exec -it postgresGoBank dropdb go_bank
+	docker exec -it postgres_go_bank dropdb go_bank
 
 
 migrate_up:

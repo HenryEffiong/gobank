@@ -21,7 +21,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::307417376574:role/GitHubAction-AssumeRoleWithAction
-          # arn:aws:iam::307417376574:user/iamhenryeffiong
+          # arn:aws:iam::307417376574:user/iamhenryeffiong  
           aws-region: us-east-1
 
       # Hello from AWS: WhoAmI

@@ -15,6 +15,10 @@ migrate_up:
 	@echo "running up migrations..."
 	migrate -path db/migration -database "postgresql://root:secret@localhost:5432/go_bank?sslmode=disable" -verbose up
 
+migrateremote_up:
+	@echo "running up migrations to aws rds..."
+	migrate -path db/migration -database "postgresql://root:wTyzSBa1efsLujvMedLq@go-bank.cj2ya24agcgw.us-east-1.rds.amazonaws.com:5432/go_bank" -verbose up
+
 migrate_down:
 	@echo "running down migrations..."
 	migrate -path db/migration -database "postgresql://root:secret@localhost:5432/go_bank?sslmode=disable" -verbose down

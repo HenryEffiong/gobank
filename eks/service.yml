@@ -4,9 +4,9 @@ metadata:
   name: go-bank-api-service
 spec:
   selector:
-    app.kubernetes.io/name: go-bank-api
+    app: go-bank-api
   ports:
     - protocol: TCP
       port: 80
       targetPort: 8080
-  
+  type: ClusterIP

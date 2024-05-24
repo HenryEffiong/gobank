@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: go-bank-api-ingress
+spec:
+  rules:
+  - host: 
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: go-bank-api-service
+            port:
+              number: 80

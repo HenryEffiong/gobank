@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	db "github.com/henryeffiong/gobank/db/sqlc"
 	"github.com/henryeffiong/gobank/util"
 )
@@ -105,11 +106,11 @@ type loginUserRequest struct {
 }
 
 type loginUserResponse struct {
-	// SessionID             uuid.UUID    `json:"session_id"`
+	SessionID             uuid.UUID    `json:"session_id"`
 	AccessToken string `json:"access_token"`
-	// AccessTokenExpiresAt  time.Time    `json:"access_token_expires_at"`
-	// RefreshToken          string       `json:"refresh_token"`
-	// RefreshTokenExpiresAt time.Time    `json:"refresh_token_expires_at"`
+	AccessTokenExpiresAt  time.Time    `json:"access_token_expires_at"`
+	RefreshToken          string       `json:"refresh_token"`
+	RefreshTokenExpiresAt time.Time    `json:"refresh_token_expires_at"`
 	User userResponse `json:"user"`
 }
 
@@ -136,7 +137,7 @@ func (server *Server) loginUser(ctx *gin.Context) {
 		return
 	}
 
-	accessToken, err := server.tokenMaker.CreateToken(
+	accessToken, accessPayload, err := server.tokenMaker.CreateToken(
 		user.Username,
 		// user.Role,
 		server.config.AccessTokenDuration,
@@ -171,11 +172,11 @@ func (server *Server) loginUser(ctx *gin.Context) {
 	}
 
 	rsp := loginUserResponse{
-		// SessionID:             session.ID,
+		SessionID:             session.ID,
 		AccessToken: accessToken,
-		// AccessTokenExpiresAt:  accessPayload.ExpiredAt,
-		// RefreshToken:          refreshToken,
-		// RefreshTokenExpiresAt: refreshPayload.ExpiredAt,
+		AccessTokenExpiresAt:  accessPayload.ExpiredAt,
+		RefreshToken:          refreshToken,
+		RefreshTokenExpiresAt: refreshPayload.ExpiredAt,
 		User: newUserResponse(user),
 	}
 	ctx.JSON(http.StatusOK, rsp)

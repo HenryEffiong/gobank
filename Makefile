@@ -37,3 +37,5 @@ mock:
 
 
 .PHONY: postgres createdb dropdb migrate_up migrate_down sqlc test server mock 
+
+# migrate create -ext sql -dir db/migration -seq NAME

@@ -146,29 +146,29 @@ func (server *Server) loginUser(ctx *gin.Context) {
 		return
 	}
 
-	// refreshToken, refreshPayload, err := server.tokenMaker.CreateToken(
-	// 	user.Username,
-	// 	user.Role,
-	// 	server.config.RefreshTokenDuration,
-	// )
-	// if err != nil {
-	// 	ctx.JSON(http.StatusInternalServerError, errorResponse(err))
-	// 	return
-	// }
+	refreshToken, refreshPayload, err := server.tokenMaker.CreateToken(
+		user.Username,
+		// user.Role,
+		server.config.RefreshTokenDuration,
+	)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
 
-	// session, err := server.store.CreateSession(ctx, db.CreateSessionParams{
-	// 	ID:           refreshPayload.ID,
-	// 	Username:     user.Username,
-	// 	RefreshToken: refreshToken,
-	// 	UserAgent:    ctx.Request.UserAgent(),
-	// 	ClientIp:     ctx.ClientIP(),
-	// 	IsBlocked:    false,
-	// 	ExpiresAt:    refreshPayload.ExpiredAt,
-	// })
-	// if err != nil {
-	// 	ctx.JSON(http.StatusInternalServerError, errorResponse(err))
-	// 	return
-	// }
+	session, err := server.store.CreateSession(ctx, db.CreateSessionParams{
+		ID:           refreshPayload.ID,
+		Username:     user.Username,
+		RefreshToken: refreshToken,
+		UserAgent:    ctx.Request.UserAgent(),
+		ClientIp:     ctx.ClientIP(),
+		IsBlocked:    false,
+		ExpiresAt:    refreshPayload.ExpiredAt,
+	})
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
 
 	rsp := loginUserResponse{
 		// SessionID:             session.ID,

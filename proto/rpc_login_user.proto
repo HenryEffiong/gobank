@@ -1,0 +1,23 @@
+syntax = "proto3"; // tells the compiler that we are using proto syntax version 3
+
+package pb; // declare the package to group multiple proto files of the same topic
+
+import "user.proto";
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/henryeffiong/gobank/pb"; // basically the mod/package. all the files go here i.e /pb
+
+message LoginUserRequest {
+    string username = 1;
+    string password = 2;
+}
+
+message LoginUserResponse {
+   User user = 1;
+   string session_id = 2;
+   string access_token = 3;
+   string refresh_token = 4;
+   google.protobuf.Timestamp access_token_expires_at = 5;
+   google.protobuf.Timestamp refresh_token_expires_at = 6;
+}

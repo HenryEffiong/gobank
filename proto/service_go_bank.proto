@@ -1,0 +1,13 @@
+syntax = "proto3"; // tells the compiler that we are using proto syntax version 3
+
+package pb; // declare the package to group multiple proto files of the same topic
+
+import "rpc_create_user.proto";
+import "rpc_login_user.proto";
+
+option go_package = "github.com/henryeffiong/gobank/pb"; // basically the mod/package. all the files go here i.e /pb
+
+service GoBank {
+    rpc CreateUser (CreateUserRequest) returns (CreateUserResponse){}
+    rpc LoginUser (LoginUserRequest) returns (LoginUserResponse){}
+}

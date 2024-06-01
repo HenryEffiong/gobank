@@ -2,6 +2,7 @@ syntax = "proto3"; // tells the compiler that we are using proto syntax version 
 
 package pb; // declare the package to group multiple proto files of the same topic
 
+import "google/api/annotations.proto"; // import this line
 import "rpc_create_user.proto";
 import "rpc_login_user.proto";
 
@@ -9,5 +10,10 @@ option go_package = "github.com/henryeffiong/gobank/pb"; // basically the mod/pa
 
 service GoBank {
     rpc CreateUser (CreateUserRequest) returns (CreateUserResponse){}
-    rpc LoginUser (LoginUserRequest) returns (LoginUserResponse){}
+    rpc LoginUser (LoginUserRequest) returns (LoginUserResponse){
+        option (google.api.http) = { // add this option
+            post: "/v1/login_user"
+            body: "*"
+        };
+    }
 }

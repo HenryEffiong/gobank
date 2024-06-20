@@ -81,7 +81,7 @@ func runGatewayServer(config util.Config, store db.Store) {
 		},
 		UnmarshalOptions: protojson.UnmarshalOptions{
 			DiscardUnknown: true,
-		}, 
+		},
 	})
 
 	grpcMux := runtime.NewServeMux(jsonOption)
@@ -96,6 +96,9 @@ func runGatewayServer(config util.Config, store db.Store) {
 
 	mux := http.NewServeMux()
 	mux.Handle("/", grpcMux)
+
+	fs := http.FileServer(http.Dir("./docs/swagger"))
+	mux.Handle("/swagger/", http.StripPrefix("/swagger/", fs))
 
 	listener, err := net.Listen("tcp", config.HTTPServerAddress)
 	if err != nil {

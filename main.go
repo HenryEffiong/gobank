@@ -81,7 +81,7 @@ func runGatewayServer(config util.Config, store db.Store) {
 		},
 		UnmarshalOptions: protojson.UnmarshalOptions{
 			DiscardUnknown: true,
-		},
+		}, 
 	})
 
 	grpcMux := runtime.NewServeMux(jsonOption)
